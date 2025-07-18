@@ -19,5 +19,6 @@ class PositionalEncoding(torch.nn.Module):
         seq_len = x.size(1)
         x = x + self.pe[:, :seq_len, :]
         return x
-    
-    
+
+
+#
