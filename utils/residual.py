@@ -1,23 +1,25 @@
-import torch.nn as nn
-from utils.DyT import  DyT
+from enum import Enum
+
+class NormType(Enum):
+    LAYER_NORM = "layernorm"
+    DYT = "dyt"
+
+from torch import nn
+from utils.DyT import DyT
+
 class ResidualConnection(nn.Module):
-    def __init__(self, size: int, dropout: float):
+    def __init__(self, size: int, dropout: float, norm_type: NormType):
         super().__init__()
-        self.norm = nn.LayerNorm(size)
+        if norm_type == NormType.LAYER_NORM:
+            self.norm = nn.LayerNorm(size)
+        elif norm_type == NormType.DYT:
+            self.norm = DyT(size)
+        else:
+            raise ValueError(f"Unknown norm type: {norm_type}")
+        
         self.dropout = nn.Dropout(dropout)
 
-    def forward(self,x, sublayer):
-        return self.norm(x + self.dropout(sublayer(x)))
-    
-
-
-class ResidualConnectionDyT(nn.Module):
-    def __init__(self, size: int, dropout: float):
-        super().__init__()
-        self.norm = DyT(size)
-        self.dropout = nn.Dropout(dropout)
-
-    def forward(self,x, sublayer):
+    def forward(self, x, sublayer):
         return self.norm(x + self.dropout(sublayer(x)))
 
     
