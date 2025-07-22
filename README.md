@@ -17,7 +17,7 @@ The transformer encoder consists of the following key components:
 ### Core Models
 - [`MultiheadAttention`](models/attention.py) - Multi-head self-attention mechanism
 - [`SelfAttention`](models/attention.py) - Single-head self-attention implementation
-- [`PositionWiseFeed`](models/feedforward.py) - Position-wise feed forward network
+- [`PositionWiseFeed`](models/feedforward.py) - Podsition-wise feed forward network
 - [`TransformerEncoderLayer`](models/encoder.py) - Complete encoder layer combining attention and feed forward
 
 ### Utilities
