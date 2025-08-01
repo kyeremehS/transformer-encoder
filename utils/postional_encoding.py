@@ -15,10 +15,9 @@ class PositionalEncoding(torch.nn.Module):
         self.register_buffer('pe', pe)
 
     def forward(self, x):
-        # x: (batch_size, seq_len, d_model)
+        if x.dim() != 3:
+            raise ValueError(f"Expected input of shape (batch_size, seq_len, d_model), got {x.shape}")
         seq_len = x.size(1)
-        x = x + self.pe[:, :seq_len, :]
-        return x
+        return x + self.pe[:, :seq_len, :]
 
 
-#

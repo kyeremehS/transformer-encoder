@@ -37,8 +37,8 @@ class SelfAttention(nn.Module):
     
 
  #Multihead Attention Module
-class MultiheadAttention(torch.nn.Module):
-    def __init__(self, d_model, num_heads):
+class MultiheadAttention(torch.nn.Module):  
+    def __init__(self, d_model, num_heads, dropout):
         super().__init__()
         self.d_model = d_model
         self.num_heads = num_heads
