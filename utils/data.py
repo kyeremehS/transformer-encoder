@@ -17,7 +17,9 @@ def build_dataset(batch_size, max_len):
     def encode(text):
         tokens = tokenizer(text)
         ids = vocab(tokens)[:max_len]
-        return torch.tensor(ids + [0] * (max_len - len(ids))), len(ids)
+        # Use vocab["<pad>"] instead of hardcoded 0
+        pad_idx = vocab["<pad>"]
+        return torch.tensor(ids + [pad_idx] * (max_len - len(ids))), len(ids)
 
     def collate_batch(batch):
         texts, labels = [], []

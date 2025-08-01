@@ -18,10 +18,13 @@ class TransformerEncoderLayer(nn.Module):
 
     def forward(self, x, mask=None):
         # Apply multi-head attention + residual connection + normalization
-        x = self.residual_attn(x, lambda x_: self.self_attn(x_, mask))
+        # Fix: Extract only the output from self_attn which returns (output, attention_weights)
+        x = self.residual_attn(x, lambda x_: self.self_attn(x_, mask)[0])
 
         # Apply feedforward network + residual connection + normalization
         x = self.residual_ff(x, self.feedforward)
+        
+        return x
 
 
 

@@ -42,6 +42,7 @@ class MultiheadAttention(torch.nn.Module):
         super().__init__()
         self.d_model = d_model
         self.num_heads = num_heads
+        self.dropout = dropout
         assert d_model % num_heads == 0, "d_model must be divisible by num_heads"
 
         self.head_dim = d_model // num_heads
@@ -53,8 +54,11 @@ class MultiheadAttention(torch.nn.Module):
 
         # Initialize the output linear layer
         self.W_0 = torch.nn.Linear(d_model, d_model)
+        
+        # Add dropout layer
+        self.dropout_layer = torch.nn.Dropout(dropout)
 
-    def forward(self, x):
+    def forward(self, x, mask=None):
         batch_size, seq_len, _ = x.size()
 
         W_Q = self.W_Q(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
@@ -62,7 +66,15 @@ class MultiheadAttention(torch.nn.Module):
         W_V = self.W_V(x).view(batch_size, seq_len, self.num_heads, self.head_dim).transpose(1, 2)
 
         attention_scores = torch.matmul(W_Q, W_K.transpose(-2, -1)) / math.sqrt(self.head_dim)
+        
+        # Apply mask if provided
+        if mask is not None:
+            attention_scores = attention_scores.masked_fill(mask == 0, -1e9)
+        
         attention_weights = torch.nn.functional.softmax(attention_scores, dim=-1)
+        
+        # Apply dropout to attention weights
+        attention_weights = self.dropout_layer(attention_weights)
 
         context = torch.matmul(attention_weights, W_V)
 

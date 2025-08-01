@@ -33,6 +33,9 @@ class TransformerClassifier(nn.Module):
     
     def forward(self, x):
         # x shape: (batch_size, seq_len)
+        if x.dim() != 2:
+            raise ValueError(f"Expected input of shape (batch_size, seq_len), got {x.shape}")
+        
         x = self.embedding(x)  # (batch_size, seq_len, d_model)
         x = self.pe(x)         # Add positional encoding
         x = self.encoder(x)    # Apply transformer layers
