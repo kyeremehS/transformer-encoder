@@ -8,5 +8,5 @@ config = {
     "batch_size": 64,
     "lr": 1e-3,
     "max_len": 128,
-    "use_dyt": False
+    "use_dyt": True
 }
