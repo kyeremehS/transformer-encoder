@@ -146,9 +146,9 @@ If you use this implementation in your research, please cite both the original M
 
 @misc{transformer_dyt_implementation,
   title={PyTorch Implementation of Transformer Encoder with Dynamic Tanh Normalization},
-  author={Your Name},
+  author={Samuel Affum Kyeremeh},
   year={2025},
-  url={https://github.com/your-repo/transformer-encoder}
+  url={https://github.com/kyeremehS/transformer-encoder}
 }
 ```
 
